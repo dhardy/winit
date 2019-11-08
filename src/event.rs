@@ -651,7 +651,7 @@ pub enum VirtualKeyCode {
     RShift,
     RWin,
     Sleep,
-    Stop,
+    Stop, // TODO: is this power off or equivalent to WebStop or what?
     Sysrq,
     Tab,
     Unlabeled,
