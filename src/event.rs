@@ -576,6 +576,7 @@ pub enum VirtualKeyCode {
     At,
     Ax,
     Backslash,
+    Begin, // Numpad 5 with numlock off
     Calculator,
     Capital,
     Colon,
@@ -595,12 +596,13 @@ pub enum VirtualKeyCode {
     Mail,
     MediaSelect,
     MediaStop,
+    Menu,
     Minus,
     Multiply,
     Mute,
     MyComputer,
-    NavigateForward,  // also called "Prior"
-    NavigateBackward, // also called "Next"
+    NavigateForward,
+    NavigateBackward,
     NextTrack,
     NoConvert,
     NumpadComma,
