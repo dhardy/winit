@@ -1,6 +1,8 @@
 # Unreleased
 
 - On macOS, fix application termination on `ControlFlow::Exit`
+- Add VirtualKeyCode enumerations for various symbols with X11 bindings
+- Fix some missing X11 key bindings
 
 # 0.20.0 Alpha 4 (2019-10-18)
 
