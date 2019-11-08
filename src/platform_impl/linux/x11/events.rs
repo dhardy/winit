@@ -4,6 +4,7 @@ use libc;
 
 pub fn keysym_to_element(keysym: libc::c_uint) -> Option<VirtualKeyCode> {
     Some(match keysym {
+        0x20ac => VirtualKeyCode::Euro, // not defined by x11-dl crate, but in keysymdef.h
         ffi::XK_BackSpace => VirtualKeyCode::Back,
         ffi::XK_Tab => VirtualKeyCode::Tab,
         //ffi::XK_Linefeed => VirtualKeyCode::Linefeed,

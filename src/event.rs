@@ -614,6 +614,7 @@ pub enum VirtualKeyCode {
     Cent,
     Currency,
     Dollar,
+    Euro,
     Sterling,
     Yen,
 
