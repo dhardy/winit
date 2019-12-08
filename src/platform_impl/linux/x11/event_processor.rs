@@ -1,9 +1,4 @@
-use std::{
-    cell::RefCell,
-    collections::{HashMap, HashSet},
-    rc::Rc,
-    slice,
-};
+use std::{cell::RefCell, collections::HashMap, rc::Rc, slice};
 
 use libc::{c_char, c_int, c_long, c_uint, c_ulong};
 
@@ -32,8 +27,8 @@ pub(super) struct EventProcessor<T: 'static> {
     pub(super) target: Rc<RootELW<T>>,
     pub(super) mod_keymap: ModifierKeymap,
     pub(super) device_mod_state: ModifierKeyState,
-    // Set of touch events currently in progress
-    pub(super) touch: HashSet<u64>,
+    // Number of touch events in process and id of first
+    pub(super) touch: (u64, u64),
 }
 
 impl<T: 'static> EventProcessor<T> {
@@ -1242,18 +1237,21 @@ impl<T: 'static> EventProcessor<T> {
     }
 }
 
-fn is_first_touch(m: &mut HashSet<u64>, id: u64, phase: TouchPhase) -> bool {
-    let is_first = m.is_empty();
-
+fn is_first_touch(touch: &mut (u64, u64), id: u64, phase: TouchPhase) -> bool {
     match phase {
         TouchPhase::Started => {
-            m.insert(id);
+            touch.0 += 1;
+            if touch.0 == 1 {
+                touch.1 = id;
+            }
         }
         TouchPhase::Cancelled | TouchPhase::Ended => {
-            m.remove(&id);
+            touch.0 -= 1;
         }
         _ => (),
     }
 
-    is_first
+    // Since all touch events have a unique id and self.touch.1 has been set
+    // by now (since there is at least one touch), this is correct:
+    touch.1 == id
 }
