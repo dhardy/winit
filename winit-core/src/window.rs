@@ -137,47 +137,77 @@ impl Default for WindowPositioner {
     }
 }
 
-/// Attributes used when creating a window.
-#[derive(Debug)]
-#[non_exhaustive]
-pub struct WindowAttributes {
-    pub surface_size: Option<Size>,
-    pub min_surface_size: Option<Size>,
-    pub max_surface_size: Option<Size>,
-    pub surface_resize_increments: Option<Size>,
-    /// The initial position of the window in screen coordinates.
-    ///
-    /// For popups, this position is relative to the parent window.
-    ///
-    /// **Wayland:** See `WindowAttributesWayland` for more options to position a popup.
-    pub position: Option<Position>,
-    pub resizable: bool,
-    pub enabled_buttons: WindowButtons,
-    pub title: String,
-    pub maximized: bool,
-    pub visible: bool,
-    pub transparent: bool,
-    pub blur: bool,
-    pub decorations: bool,
-    pub window_icon: Option<Icon>,
-    pub preferred_theme: Option<Theme>,
-    pub content_protected: bool,
-    pub window_level: WindowLevel,
-    /// Whether the window should be activated (focused) when shown.
-    ///
-    /// For [`WindowType::Popup`] windows this also controls keyboard grabbing:
-    /// - `true` — the popup captures keyboard input (Win32: omits `WS_EX_NOACTIVATE`, macOS: uses
-    ///   an activating `NSWindow`, Wayland: issues `xdg_popup.grab`).
-    /// - `false` — the popup is non-activating and the parent window keeps focus (Win32:
-    ///   `WS_EX_NOACTIVATE`, macOS: `NSWindowStyleMask::NonactivatingPanel`, Wayland: no grab).
-    pub active: bool,
-    pub cursor: Cursor,
-    pub(crate) parent_window: Option<SendSyncRawWindowHandle>,
-    pub fullscreen: Option<Fullscreen>,
-    pub platform: Option<Box<dyn PlatformWindowAttributes>>,
-    pub window_type: WindowType,
-    /// See [`WindowAttributes::with_positioner`].
-    pub positioner: Option<WindowPositioner>,
+impl_tools::impl_scope! {
+    /// Attributes used when creating a window.
+    #[derive(Debug)]
+    #[impl_default]
+    #[non_exhaustive]
+    pub struct WindowAttributes {
+        /// Default value: `None`.
+        pub surface_size: Option<Size>,
+        /// Default value: `None`.
+        pub min_surface_size: Option<Size>,
+        /// Default value: `None`.
+        pub max_surface_size: Option<Size>,
+        /// Default value: `None`.
+        pub surface_resize_increments: Option<Size>,
+        /// The initial position of the window in screen coordinates.
+        ///
+        /// For popups, this position is relative to the parent window.
+        ///
+        /// Default value: `None`.
+        ///
+        /// **Wayland:** See `WindowAttributesWayland` for more options to position a popup.
+        pub position: Option<Position>,
+        /// Default value: `true`.
+        pub resizable: bool = true,
+        /// Default value: [`WindowButtons::all`].
+        pub enabled_buttons: WindowButtons = WindowButtons::all(),
+        /// Default value: "winit window".
+        pub title: String = String::from("winit window"),
+        /// Default value: `false`.
+        pub maximized: bool,
+        /// Default value: `true`.
+        pub visible: bool = true,
+        /// Default value: `false`.
+        pub transparent: bool,
+        /// Default value: `false`.
+        pub blur: bool,
+        /// Default value: `true`.
+        pub decorations: bool = true,
+        /// Default value: `None`.
+        pub window_icon: Option<Icon>,
+        /// Default value: `None`.
+        pub preferred_theme: Option<Theme>,
+        /// Default value: `false`.
+        pub content_protected: bool,
+        /// Default value: [`WindowLevel::default()`].
+        pub window_level: WindowLevel,
+        /// Whether the window should be activated (focused) when shown.
+        ///
+        /// For [`WindowType::Popup`] windows this also controls keyboard grabbing:
+        /// - `true` — the popup captures keyboard input (Win32: omits `WS_EX_NOACTIVATE`, macOS: uses
+        ///   an activating `NSWindow`, Wayland: issues `xdg_popup.grab`).
+        /// - `false` — the popup is non-activating and the parent window keeps focus (Win32:
+        ///   `WS_EX_NOACTIVATE`, macOS: `NSWindowStyleMask::NonactivatingPanel`, Wayland: no grab).
+        ///
+        /// Default value: `true`.
+        pub active: bool = true,
+        /// Default value: [`Cursor::default()`].
+        pub cursor: Cursor,
+        /// Default value: `None`.
+        pub(crate) parent_window: Option<SendSyncRawWindowHandle>,
+        /// Default value: `None`.
+        pub fullscreen: Option<Fullscreen>,
+        /// Default value: `None`.
+        pub platform: Option<Box<dyn PlatformWindowAttributes>>,
+        /// Default value: [`WindowType::default()`].
+        pub window_type: WindowType,
+        /// See [`WindowAttributes::with_positioner`].
+        ///
+        /// Default value: `None`.
+        pub positioner: Option<WindowPositioner>,
+    }
 }
 
 impl WindowAttributes {
@@ -561,38 +591,6 @@ impl Clone for WindowAttributes {
             platform: self.platform.as_ref().map(|platform| platform.box_clone()),
             window_type: self.window_type,
             positioner: self.positioner,
-        }
-    }
-}
-
-impl Default for WindowAttributes {
-    #[inline]
-    fn default() -> WindowAttributes {
-        WindowAttributes {
-            enabled_buttons: WindowButtons::all(),
-            title: String::from("winit window"),
-            decorations: true,
-            resizable: true,
-            visible: true,
-            active: true,
-            surface_resize_increments: Default::default(),
-            content_protected: Default::default(),
-            min_surface_size: Default::default(),
-            max_surface_size: Default::default(),
-            preferred_theme: Default::default(),
-            parent_window: Default::default(),
-            surface_size: Default::default(),
-            window_level: Default::default(),
-            window_icon: Default::default(),
-            transparent: Default::default(),
-            fullscreen: Default::default(),
-            maximized: Default::default(),
-            position: Default::default(),
-            platform: Default::default(),
-            cursor: Cursor::default(),
-            blur: Default::default(),
-            window_type: Default::default(),
-            positioner: Default::default(),
         }
     }
 }
