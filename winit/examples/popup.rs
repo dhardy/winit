@@ -176,16 +176,16 @@ fn main() -> Result<(), impl std::error::Error> {
             .with_visible(true)
             .with_active(true) // Grab keyboard
             .with_window_type(WindowType::Popup)
-            .with_positioner(WindowPositioner::new(
-                WindowAnchor::TopLeft,
-                (
+            .with_positioner(WindowPositioner {
+                anchor: WindowAnchor::TopLeft,
+                anchor_rect: (
                     Position::Physical(position.unwrap_or_default().cast()),
                     Size::Logical(LogicalSize { width: 1., height: 1. }),
                 ),
-                Position::Logical(LogicalPosition { x: 0., y: 0. }),
-                WindowGravity::BottomRight,
-                WindowConstraintAdjustment::all(),
-            ));
+                offset: Position::Logical(LogicalPosition { x: 0., y: 0. }),
+                gravity: WindowGravity::BottomRight,
+                constraint_adjustment: WindowConstraintAdjustment::all(),
+            });
 
         // `with_parent_window` is unsafe. Parent window must be a valid window.
         window_attributes = unsafe { window_attributes.with_parent_window(Some(parent)) };

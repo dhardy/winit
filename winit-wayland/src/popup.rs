@@ -144,13 +144,13 @@ impl Popup {
                 xdg_positioner,
                 last_configure: None,
                 parent_origin: geometry_origin,
-                positioner: WindowPositioner::new(
+                positioner: WindowPositioner {
                     anchor,
-                    (anchor_rect_position.into(), anchor_rect_size.into()),
-                    positioner_offset,
+                    anchor_rect: (anchor_rect_position.into(), anchor_rect_size.into()),
+                    offset: positioner_offset,
                     gravity,
                     constraint_adjustment,
-                ),
+                },
             },
             attributes.preferred_theme,
             false,

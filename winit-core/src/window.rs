@@ -81,7 +81,6 @@ pub enum WindowType {
 ///
 /// The structure is based on the wayland structure. For more information see the wayland
 /// documentation [XDG Positioner](https://wayland.app/protocols/xdg-shell#xdg_positioner)
-#[non_exhaustive]
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct WindowPositioner {
     /// The edge or corner of the anchor rect used to position the window relative to it.
@@ -108,18 +107,6 @@ pub struct WindowPositioner {
     /// The flags in [`WindowConstraintAdjustment`] can be combined to allow sliding, flipping,
     /// and/or resizing the window independently on each axis. Defaults to no adjustment.
     pub constraint_adjustment: WindowConstraintAdjustment,
-}
-
-impl WindowPositioner {
-    pub fn new(
-        anchor: WindowAnchor,
-        anchor_rect: (Position, Size),
-        offset: Position,
-        gravity: WindowGravity,
-        constraint_adjustment: WindowConstraintAdjustment,
-    ) -> Self {
-        WindowPositioner { anchor, anchor_rect, offset, gravity, constraint_adjustment }
-    }
 }
 
 impl Default for WindowPositioner {
